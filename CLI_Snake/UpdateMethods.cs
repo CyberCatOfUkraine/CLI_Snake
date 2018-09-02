@@ -48,5 +48,22 @@ namespace CLI_Snake
             gameObjects.Add(newFruit);
             _isFruitSpawned = true;
         }
+        private static void ProcessCollision()
+        {
+            if (_playerObject == null) return;
+            var playerPos = _playerObject.Position;
+            foreach (var gameObject in gameObjects)
+            {
+                var objectPos = gameObject.Position;
+                if (playerPos.X == objectPos.X && playerPos.Y == objectPos.Y)
+                {
+                    if (gameObject is Fruit)
+                    {
+                        var fruit = gameObject as Fruit;
+                        fruit.Respawn();
+                    }
+                }
+            }
+        }
     }
 }

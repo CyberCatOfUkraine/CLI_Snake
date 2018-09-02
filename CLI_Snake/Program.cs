@@ -41,6 +41,7 @@ namespace CLI_Snake
             }
 
             ProcessPressedButtons();
+            ProcessCollision();
 
             // When all completed — call Draw process
             Draw();
