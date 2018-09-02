@@ -18,8 +18,9 @@ namespace CLI_Snake
 
         static void Main()
         {
-            
+            Console.CursorVisible = false;
             Console.WriteLine("Press any key to start game...");
+            Console.ReadKey();
 
             while (!_isGameFinished)
             {
@@ -73,7 +74,7 @@ namespace CLI_Snake
                 gameObject.Spawn();
             }
 
-            // Hide cursor
+            // Reset cursor
             Console.SetCursorPosition(0, 0);
         }
     }
