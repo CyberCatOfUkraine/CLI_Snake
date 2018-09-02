@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace CLI_Snake
@@ -11,9 +12,12 @@ namespace CLI_Snake
         private static bool _isPlayerSpawned;
         private static bool _isGameFinished;
         private static Player _playerObject;
+        private static int _delayPerFrame = 200;
+        private const int MinDelayPerFrame = 50;
 
         static void Main()
         {
+            
             Console.WriteLine("Press any key to start game...");
 
             while (!_isGameFinished)
@@ -21,6 +25,7 @@ namespace CLI_Snake
                 Update();
             }
 
+            Console.WriteLine("Game Over");
             Console.ReadKey();
         }
 
@@ -40,12 +45,23 @@ namespace CLI_Snake
                 SpawnFruit();
             }
 
-            ProcessPressedButtons();
+            if (Console.KeyAvailable)
+            {
+                ProcessPressedButtons();
+            }
+
             ProcessCollision();
+            _playerObject.Move();
+
+            if (IsGameOver())
+            {
+                _isGameFinished = true;
+                return;
+            }
 
             // When all completed — call Draw process
             Draw();
-            Thread.Sleep(10);
+            Thread.Sleep(_delayPerFrame);
         }
         // Main game's draw loop
         private static void Draw()

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CLI_Snake
 {
@@ -11,24 +7,23 @@ namespace CLI_Snake
         private static void ProcessPressedButtons()
         {
             var pressedKey = Console.ReadKey();
-            if (_playerObject == null) return;
             switch (pressedKey.Key)
             {
                 case ConsoleKey.LeftArrow:
                 case ConsoleKey.A:
-                    _playerObject.Move(Directions.Left);
+                    _playerObject.ChangeDirection(Direction.Left);
                     break;
                 case ConsoleKey.RightArrow:
                 case ConsoleKey.D:
-                    _playerObject.Move(Directions.Right);
+                    _playerObject.ChangeDirection(Direction.Right);
                     break;
                 case ConsoleKey.UpArrow:
                 case ConsoleKey.W:
-                    _playerObject.Move(Directions.Up);
+                    _playerObject.ChangeDirection(Direction.Up);
                     break;
                 case ConsoleKey.DownArrow:
                 case ConsoleKey.S:
-                    _playerObject.Move(Directions.Down);
+                    _playerObject.ChangeDirection(Direction.Down);
                     break;
                 case ConsoleKey.Escape:
                     _isGameFinished = true;
@@ -61,9 +56,17 @@ namespace CLI_Snake
                     {
                         var fruit = gameObject as Fruit;
                         fruit.Respawn();
+                        if (_delayPerFrame > MinDelayPerFrame)
+                            _delayPerFrame -= 10;
                     }
                 }
             }
+        }
+        private static bool IsGameOver()
+        {
+            var playerPos = _playerObject.Position;
+            var consoleSize = new Rectangle(0, 0, Console.WindowWidth, Console.WindowHeight);
+            return !consoleSize.IsIntersect(playerPos);
         }
     }
 }

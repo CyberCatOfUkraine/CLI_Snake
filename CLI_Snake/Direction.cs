@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CLI_Snake
 {
-    public enum Directions
+    public enum Direction
     {
         Left,
         Right,

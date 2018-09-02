@@ -11,6 +11,7 @@ namespace CLI_Snake
         public Point Position { get; set; }
 
         private char _symbol;
+        private Direction _currentDirection;
 
         public Player()
         {
@@ -18,6 +19,7 @@ namespace CLI_Snake
             var centerY = (Console.WindowTop + Console.WindowHeight) / 2;
             Position = new Point(centerX, centerY);
             _symbol = '&';
+            _currentDirection = Direction.Left;
         }
 
         public void Spawn()
@@ -25,25 +27,27 @@ namespace CLI_Snake
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(_symbol);
         }
-        public void Move(Directions direction)
+        public void Move()
         {
-            switch (direction)
+            switch (_currentDirection)
             {
-                case Directions.Left:
+                case Direction.Left:
                     Position.X--;
                     break;
-                case Directions.Right:
+                case Direction.Right:
                     Position.X++;
                     break;
-                case Directions.Up:
+                case Direction.Up:
                     Position.Y--;
                     break;
-                case Directions.Down:
+                case Direction.Down:
                     Position.Y++;
                     break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
             }
+        }
+        public void ChangeDirection(Direction direction)
+        {
+            _currentDirection = direction;
         }
     }
 }

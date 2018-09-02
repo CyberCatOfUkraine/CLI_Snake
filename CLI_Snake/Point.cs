@@ -8,8 +8,8 @@
         /// <summary>
         /// Create 2D point with coordinates (X;Y)
         /// </summary>
-        /// <param name="posX">X coordinate</param>
-        /// <param name="posY">Y coordinate</param>
+        /// <param name="posX">X coordinate (row)</param>
+        /// <param name="posY">Y coordinate (column)</param>
         public Point(int posX, int posY)
         {
             X = posX;
