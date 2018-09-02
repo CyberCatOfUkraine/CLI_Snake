@@ -54,6 +54,7 @@ namespace CLI_Snake
                 {
                     if (gameObject is Fruit)
                     {
+                        _score++;
                         var fruit = gameObject as Fruit;
                         fruit.Respawn();
                         if (_delayPerFrame > MinDelayPerFrame)
@@ -67,6 +68,18 @@ namespace CLI_Snake
             var playerPos = _playerObject.Position;
             var consoleSize = new Rectangle(0, 0, Console.WindowWidth, Console.WindowHeight);
             return !consoleSize.IsIntersect(playerPos);
+        }
+        private static void ShowGameResults()
+        {
+            Console.Clear();
+            var centerX = (Console.WindowLeft + Console.WindowWidth) / 2;
+            var centerY = (Console.WindowTop + Console.WindowHeight) / 2;
+            var gameOverText = "Game Over";
+            Console.SetCursorPosition(centerX - gameOverText.Length / 2, centerY);
+            Console.WriteLine(gameOverText);
+            var gameOverScore = $"Your score: {_score}";
+            Console.SetCursorPosition(centerX - gameOverScore.Length / 2, centerY + 1);
+            Console.WriteLine(gameOverScore);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace CLI_Snake
         private static Player _playerObject;
         private static int _delayPerFrame = 200;
         private const int MinDelayPerFrame = 50;
+        private static uint _score = 0;
 
         static void Main()
         {
@@ -25,8 +26,7 @@ namespace CLI_Snake
                 Update();
             }
 
-            Console.WriteLine("Game Over");
-            Console.ReadKey();
+            ShowGameResults();
         }
 
         // Main game's logic loop
