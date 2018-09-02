@@ -4,17 +4,22 @@ using System.Threading;
 
 namespace CLI_Snake
 {
-    class Program
+    partial class Program
     {
         private static List<IGameObject> gameObjects = new List<IGameObject>();
-        private static bool isFruitSpawned = default;
+        private static bool _isFruitSpawned;
+        private static bool _isPlayerSpawned;
+        private static bool _isGameFinished;
+        private static Player _playerObject;
 
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Press any key to start game...");
-            Console.ReadKey();
 
-            Update();
+            while (!_isGameFinished)
+            {
+                Update();
+            }
 
             Console.ReadKey();
         }
@@ -23,17 +28,24 @@ namespace CLI_Snake
         private static void Update()
         {
             // Logic here
-            if (!isFruitSpawned)
+
+            // Spawn player
+            if (!_isPlayerSpawned)
             {
-                Fruit newFruit = new Fruit();
-                gameObjects.Add(newFruit);
-                isFruitSpawned = true;
+                SpawnPlayer();
             }
+            // Spawn/Respawn fruit
+            if (!_isFruitSpawned)
+            {
+                SpawnFruit();
+            }
+
+            ProcessPressedButtons();
+
             // When all completed — call Draw process
             Draw();
-            Thread.Sleep(100);
+            Thread.Sleep(10);
         }
-
         // Main game's draw loop
         private static void Draw()
         {

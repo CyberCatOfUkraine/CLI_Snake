@@ -27,7 +27,6 @@ namespace CLI_Snake
             Console.SetCursorPosition(Position.X, Position.Y);
             Console.Write(_symbol);
         }
-
         public void Respawn()
         {
             var rand = new Random();
