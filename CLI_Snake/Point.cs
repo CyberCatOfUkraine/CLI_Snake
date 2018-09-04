@@ -15,5 +15,24 @@
             X = posX;
             Y = posY;
         }
+        public Point(Point newPoint)
+        {
+            X = newPoint.X;
+            Y = newPoint.Y;
+        }
+
+        public void Change(Point newPoint)
+        {
+            X = newPoint.X;
+            Y = newPoint.Y;
+        }
+
+        public override bool Equals(object point)
+        {
+            var cmpPoint = (Point) point;
+            if (cmpPoint == null)
+                return false;
+            return X == cmpPoint.X && Y == cmpPoint.Y;
+        }
     }
 }

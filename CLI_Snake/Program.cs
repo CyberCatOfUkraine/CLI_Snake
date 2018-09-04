@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace CLI_Snake
@@ -14,7 +13,7 @@ namespace CLI_Snake
         private static Player _playerObject;
         private static int _delayPerFrame = 200;
         private const int MinDelayPerFrame = 50;
-        private static uint _score = 0;
+        private static uint _score;
 
         static void Main()
         {

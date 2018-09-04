@@ -59,6 +59,7 @@ namespace CLI_Snake
                         fruit.Respawn();
                         if (_delayPerFrame > MinDelayPerFrame)
                             _delayPerFrame -= 10;
+                        _playerObject.IncreaseLength();
                     }
                 }
             }
