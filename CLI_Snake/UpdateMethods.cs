@@ -43,6 +43,17 @@ namespace CLI_Snake
             gameObjects.Add(newFruit);
             _isFruitSpawned = true;
         }
+
+        private static bool IsPositionOccupied(Point point)
+        {
+            foreach (var gameObject in gameObjects)
+            {
+                if (gameObject.Position.Equals(point))
+                    return true;
+            }
+
+            return false;
+        }
         private static void ProcessCollision()
         {
             if (_playerObject == null) return;
@@ -57,7 +68,12 @@ namespace CLI_Snake
                         case Fruit _:
                             _score++;
                             var fruit = gameObject as Fruit;
-                            fruit.Respawn();
+                            // respawn fruit on FREE cell
+                            do
+                            {
+                                fruit.Respawn();
+                            } while (IsPositionOccupied(fruit.Position));
+
                             if (_delayPerFrame > MinDelayPerFrame)
                                 _delayPerFrame -= 10;
                             gameObjects.Add(_playerObject.IncreaseLength());
