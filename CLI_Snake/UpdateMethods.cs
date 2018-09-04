@@ -52,14 +52,19 @@ namespace CLI_Snake
                 var objectPos = gameObject.Position;
                 if (playerPos.X == objectPos.X && playerPos.Y == objectPos.Y)
                 {
-                    if (gameObject is Fruit)
+                    switch (gameObject)
                     {
-                        _score++;
-                        var fruit = gameObject as Fruit;
-                        fruit.Respawn();
-                        if (_delayPerFrame > MinDelayPerFrame)
-                            _delayPerFrame -= 10;
-                        _playerObject.IncreaseLength();
+                        case Fruit _:
+                            _score++;
+                            var fruit = gameObject as Fruit;
+                            fruit.Respawn();
+                            if (_delayPerFrame > MinDelayPerFrame)
+                                _delayPerFrame -= 10;
+                            gameObjects.Add(_playerObject.IncreaseLength());
+                            return;
+                        case SnakeTailPart _:
+                            _isGameFinished = true;
+                            return;
                     }
                 }
             }

@@ -11,7 +11,7 @@ namespace CLI_Snake
         private char _symbol;
         private char _tailSymbol;
         private Direction _currentDirection;
-        private List<Point> _tailParts;
+        private List<SnakeTailPart> _tailParts;
         private bool isNewTailPartWasAdded;
         private Point previousPoint;
 
@@ -24,7 +24,7 @@ namespace CLI_Snake
             _symbol = '█';
             _tailSymbol = '#';
             _currentDirection = Direction.Left;
-            _tailParts = new List<Point>();
+            _tailParts = new List<SnakeTailPart>();
             isNewTailPartWasAdded = false;
         }
 
@@ -34,16 +34,15 @@ namespace CLI_Snake
             Console.Write(_symbol);
             Point lastPart = null;
             if (_tailParts.Count > 0)
-                lastPart = _tailParts.Last();
+                lastPart = _tailParts.Last().Position;
             foreach (var tailPart in _tailParts)
             {
-                if (isNewTailPartWasAdded && tailPart.Equals(lastPart))
+                if (isNewTailPartWasAdded && tailPart.Position.Equals(lastPart))
                 {
                     isNewTailPartWasAdded = false;
                     continue;
                 }
-                Console.SetCursorPosition(tailPart.X, tailPart.Y);
-                Console.Write(_tailSymbol);
+                tailPart.Spawn();
             }
         }
         public void Move()
@@ -68,8 +67,8 @@ namespace CLI_Snake
             var newPos = new Point(previousPoint);
             foreach (var part in _tailParts)
             {
-                var temp = new Point(part);
-                part.Change(newPos);
+                var temp = new Point(part.Position);
+                part.Position.Change(newPos);
                 newPos = temp;
             }
         }
@@ -77,10 +76,12 @@ namespace CLI_Snake
         {
             _currentDirection = direction;
         }
-        public void IncreaseLength()
+        public SnakeTailPart IncreaseLength()
         {
-            _tailParts.Add(previousPoint);
+            var newTailPart = new SnakeTailPart(previousPoint);
+            _tailParts.Add(newTailPart);
             isNewTailPartWasAdded = true;
+            return newTailPart;
         }
     }
 }
