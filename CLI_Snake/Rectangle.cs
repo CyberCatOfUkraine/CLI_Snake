@@ -8,14 +8,8 @@ namespace CLI_Snake
 {
     public class Rectangle
     {
-        public Point Position { get; set; }
-        public Point Sizes { get; set; }
-
-        public Rectangle(Point position, Point sizes)
-        {
-            Position = position;
-            Sizes = sizes;
-        }
+        public Point Position { get; }
+        public Point Sizes { get; }
 
         public Rectangle(int x, int y, int lenX, int lenY)
         {

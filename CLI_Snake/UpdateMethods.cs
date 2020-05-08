@@ -1,89 +1,73 @@
 ﻿using System;
+using System.Linq;
 
 namespace CLI_Snake
 {
-    partial class Program
+    public static partial class Program
     {
         private static void ProcessPressedButtons()
         {
             var pressedKey = Console.ReadKey();
-            switch (pressedKey.Key)
-            {
-                case ConsoleKey.LeftArrow:
-                case ConsoleKey.A:
-                    _playerObject.ChangeDirection(Direction.Left);
-                    break;
-                case ConsoleKey.RightArrow:
-                case ConsoleKey.D:
-                    _playerObject.ChangeDirection(Direction.Right);
-                    break;
-                case ConsoleKey.UpArrow:
-                case ConsoleKey.W:
-                    _playerObject.ChangeDirection(Direction.Up);
-                    break;
-                case ConsoleKey.DownArrow:
-                case ConsoleKey.S:
-                    _playerObject.ChangeDirection(Direction.Down);
-                    break;
-                case ConsoleKey.Escape:
-                    _isGameFinished = true;
-                    break;
-            }
+            if (pressedKey.Key == ConsoleKey.LeftArrow || pressedKey.Key == ConsoleKey.A)
+                _playerObject.ChangeDirection(Direction.Left);
+            else if (pressedKey.Key == ConsoleKey.RightArrow || pressedKey.Key == ConsoleKey.D)
+                _playerObject.ChangeDirection(Direction.Right);
+            else if (pressedKey.Key == ConsoleKey.UpArrow || pressedKey.Key == ConsoleKey.W)
+                _playerObject.ChangeDirection(Direction.Up);
+            else if (pressedKey.Key == ConsoleKey.DownArrow || pressedKey.Key == ConsoleKey.S)
+                _playerObject.ChangeDirection(Direction.Down);
+            else if (pressedKey.Key == ConsoleKey.Escape) _isGameFinished = true;
         }
         private static void SpawnPlayer()
         {
             var player = new Player();
-            gameObjects.Add(player);
+            _gameObjects.Add(player);
             _playerObject = player;
             _isPlayerSpawned = true;
         }
         private static void SpawnFruit()
         {
-            var newFruit = new Fruit();
-            gameObjects.Add(newFruit);
+            _gameObjects.Add(new Fruit());
             _isFruitSpawned = true;
         }
 
         private static bool IsPositionOccupied(Point point)
         {
-            foreach (var gameObject in gameObjects)
-            {
-                if (gameObject.Position.Equals(point))
-                    return true;
-            }
-
-            return false;
+            return _gameObjects.Any(gameObject => gameObject.Position.Equals(point));
         }
+
+        private static IGameObject GameObject
+        {
+            get
+            {
+                return _gameObjects.First(someGameObject => someGameObject.Position.X == _playerObject.Position.X &&
+                                                            someGameObject.Position.Y == _playerObject.Position.Y);
+            }
+        }
+
         private static void ProcessCollision()
         {
             if (_playerObject == null) return;
-            var playerPos = _playerObject.Position;
-            foreach (var gameObject in gameObjects)
-            {
-                var objectPos = gameObject.Position;
-                if (playerPos.X == objectPos.X && playerPos.Y == objectPos.Y)
-                {
-                    switch (gameObject)
-                    {
-                        case Fruit _:
-                            _score++;
-                            var fruit = gameObject as Fruit;
-                            // respawn fruit on FREE cell
-                            do
-                            {
-                                fruit.Respawn();
-                            } while (IsPositionOccupied(fruit.Position));
 
-                            if (_delayPerFrame > MinDelayPerFrame)
-                                _delayPerFrame -= 10;
-                            gameObjects.Add(_playerObject.IncreaseLength());
-                            return;
-                        case SnakeTailPart _:
-                            _isGameFinished = true;
-                            return;
-                    }
+                switch (GameObject)
+                {
+                    case Fruit o:
+                        _score++;
+                        var fruit = o;
+                        // reSpawn fruit on FREE cell
+                        do
+                        {
+                            fruit.ReSpawn();
+                        } while (IsPositionOccupied(fruit.Position));
+
+                        if (_delayPerFrame > MinDelayPerFrame)
+                            _delayPerFrame -= 10;
+                        _gameObjects.Add(_playerObject.IncreaseLength());
+                        return;
+                    case SnakeTailPart _:
+                        _isGameFinished = true;
+                        return;
                 }
-            }
         }
         private static bool IsGameOver()
         {
@@ -96,7 +80,7 @@ namespace CLI_Snake
             Console.Clear();
             var centerX = (Console.WindowLeft + Console.WindowWidth) / 2;
             var centerY = (Console.WindowTop + Console.WindowHeight) / 2;
-            var gameOverText = "Game Over";
+            const string gameOverText = "Game Over";
             Console.SetCursorPosition(centerX - gameOverText.Length / 2, centerY);
             Console.WriteLine(gameOverText);
             var gameOverScore = $"Your score: {_score}";

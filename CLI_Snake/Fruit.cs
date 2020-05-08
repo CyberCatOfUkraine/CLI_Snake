@@ -6,34 +6,30 @@ namespace CLI_Snake
     {
         public Point Position { get; set; }
 
-        private char _symbol;
+        private const char Symbol = '@';
 
         public Fruit()
         {
-            var rand = new Random();
-            var posX = rand.Next(Console.WindowLeft, Console.WindowWidth);
-            var posY = rand.Next(Console.WindowTop, Console.WindowHeight);
-            Position = new Point(posX, posY);
-            _symbol = '@';
-        }
-        public Fruit(char symbol, Point position)
-        {
-            _symbol = symbol;
-            Position = position;
+            SetPosition();
         }
 
         public void Spawn()
         {
             Console.SetCursorPosition(Position.X, Position.Y);
-            Console.Write(_symbol);
+            Console.Write(Symbol);
         }
-        public void Respawn()
+        public void ReSpawn()
         {
-            var rand = new Random();
-            var posX = rand.Next(Console.WindowLeft, Console.WindowWidth);
-            var posY = rand.Next(Console.WindowTop, Console.WindowHeight);
-            Position = new Point(posX, posY);
+            
+            
             Spawn();
+        }
+
+        private void SetPosition()
+        {
+            var posX = new Random().Next(Console.WindowLeft, Console.WindowWidth);
+            var posY = new Random().Next(Console.WindowTop, Console.WindowHeight);
+            Position = new Point(posX, posY);
         }
     }
 }

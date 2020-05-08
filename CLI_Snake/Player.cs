@@ -8,8 +8,7 @@ namespace CLI_Snake
     {
         public Point Position { get; set; }
 
-        private char _symbol;
-        private char _tailSymbol;
+        private readonly char _symbol;
         private Direction _currentDirection;
         private List<SnakeTailPart> _tailParts;
         private bool isNewTailPartWasAdded;
@@ -22,7 +21,6 @@ namespace CLI_Snake
             Position = new Point(centerX, centerY);
             previousPoint = new Point(centerX+1, centerY);
             _symbol = '█';
-            _tailSymbol = '#';
             _currentDirection = Direction.Left;
             _tailParts = new List<SnakeTailPart>();
             isNewTailPartWasAdded = false;

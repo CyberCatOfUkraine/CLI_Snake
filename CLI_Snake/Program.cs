@@ -4,9 +4,9 @@ using System.Threading;
 
 namespace CLI_Snake
 {
-    partial class Program
+    public static partial class Program
     {
-        private static List<IGameObject> gameObjects = new List<IGameObject>();
+        private static List<IGameObject> _gameObjects = new List<IGameObject>();
         private static bool _isFruitSpawned;
         private static bool _isPlayerSpawned;
         private static bool _isGameFinished;
@@ -15,7 +15,7 @@ namespace CLI_Snake
         private const int MinDelayPerFrame = 50;
         private static uint _score;
 
-        static void Main()
+        private static void Main()
         {
             Console.CursorVisible = false;
             Console.WriteLine("Press any key to start game...");
@@ -59,7 +59,7 @@ namespace CLI_Snake
                 return;
             }
 
-            // When all completed — call Draw process
+            // When all completed ï¿½ call Draw process
             Draw();
             Thread.Sleep(_delayPerFrame);
         }
@@ -68,11 +68,7 @@ namespace CLI_Snake
         {
             Console.Clear();
 
-            foreach (var gameObject in gameObjects)
-            {
-                gameObject.Spawn();
-            }
-
+            _gameObjects.ForEach(x=>x.Spawn());
             // Reset cursor
             Console.SetCursorPosition(0, 0);
         }
